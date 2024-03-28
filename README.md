@@ -8,6 +8,7 @@ FICS 服务器集群（FICS Is Computing Service, 下称 FICS）是芯片院的 
 - Hopfield - CPU 计算队列，用于 EDA 计算
 - Boltzmann - CPU 计算队列，用于 EDA 计算
 - Makkapakka - CPU/GPU 计算队列，用于 AI/GPU 计算
+- Miller - A100 华大九天专用计算服务器，测试阶段暂不开放
 
 FICS 的主要架构如下图所示：
 
