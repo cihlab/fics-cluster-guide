@@ -14,7 +14,7 @@ FICS 的主要架构如下图所示：
 
 ![FICS Overview](img/fics-overview.jpg)
 
-用户所有的操作都在登陆节点 `mgmt01` 上进行，计算任务需要用户手动提交到计算节点上进行。
+用户所有的操作都在登陆节点 `cloud-mgmt01` 上进行，计算任务需要用户手动提交到计算节点上进行。
 
 请在使用 FICS 之前务必确认并理解：
 - 妥善保管好您的账号、密码、VNC 密码！
@@ -31,7 +31,7 @@ FICS 的主要架构如下图所示：
 
 FICS 部署了专门的邮件系统，用于用户账号管理。您可以通过向系统发送邮件完成账号申请、密码重置等操作。绝大多数操作都是自动化的，您无需等待管理员的回复。
 
-系统邮箱：`techcrew AT fics.top`，请严格按照下列操作说明发送邮件。请不要通过这个邮箱联系管理员，如需邮件联系管理员请阅读[文末的管理说明](#邮件联系管理员)。
+系统邮箱：`techcrew AT fics.top`（请将`AT`替换成`@`），请严格按照下列操作说明发送邮件。请不要通过这个邮箱联系管理员，如需邮件联系管理员请阅读[文末的管理说明](#邮件联系管理员)。
 
 注意事项:
 1. 发送邮件前请确保邮箱可以正常收发邮件；
@@ -54,6 +54,7 @@ FICS 部署了专门的邮件系统，用于用户账号管理。您可以通过
   名前姓后拼音全拼：haozhezhu 或 haozhe_zhu
   姓前名后拼音全拼：zhuhaozhe
   名前姓后且名使用拼音首字母：hzzhu（不推荐）
+  // 大家可能觉得这个吹毛求疵的规定毫无意义，但我需要用这种方法简单地确保每个人都认真阅读了此文档。
   ```
 
 #### 密码重置
@@ -112,28 +113,27 @@ ssh username@fics.local.zhutmost.com
 
 **注意**：短时间多次错误密码登陆会导致账号被锁（这是一种安全机制，防止账号密码被定向爆破），解锁请邮件管理员。
 
-#### 如何用 VNC 连接远程桌面
+#### 如何用 VNC 连接远程桌面虚拟节点
 
 针对模拟电路设计、数字后端、观察仿真波形等需求，FICS 支持使用 VNC 访问远程桌面。如果您的工作仅限于 GPU 炼丹等没有图形界面需求的任务，您可以跳过这一节。
 
-FICS 集群给每个用户分配了一个 VNC 端口，每个用户可以自行决定 VNC 服务的开关。在 SSH 登录后，您可以输入 `vnc`查看当前用户的 VNC 状态和端口：
+FICS 集群给每个用户分配了一台带有 VNC 的远程桌面虚拟节点，您需要使用 `knob` 命令启动和管理它。`knob` 的使用方法如下：
+
+- `knob start`，如果您之前未使用过 VNC 远程桌面，需要使用该命令启动它；
+- `knob status`，查看当前 VNC 远程桌面的状态；
+- `knob reset`，重置您的 VNC 远程桌面的虚拟节点；
+- `knob restart`，重启当前 VNC 远程桌面；
+- `knob shutdown`，关闭当前 VNC 远程桌面；
+
+在 `knob start` 启动 VNC 远程桌面后，您可以通过 `knob status` 观察到您的 VNC 远程桌面已经启动，如下图所示。
 
 ![FICS VNC Status](img/fics-vnc.jpg)
 
-请记住您的 VNC 端口，一般情况下它会是 `5900 + userID`，比如上图中的 `5908`。
-
-用户通过 `vnc` 指令可以管理自己的 VNC 服务。
-- `vnc` - 查看当前用户的 VNC 状态和端口（应当是 Active）；
-- `vnc start` - 启动 VNC 服务。启动前请注意先设置 VNC 密码，否则 VNC 服务无法正常启动；
-- `vnc stop` - 停用 VNC 服务；
-- `vnc restart` - 重启 VNC 服务（遇到了奇怪的环境或显示问题，不妨先试试这个；一次不成功的话过几分钟再试试）；
-- `vncpasswd` - 设置 VNC 密码（注意这个命令中间是没有空格的！）。
-
-如果您已成功启动 VNC 服务，您可以使用 VNC 客户端访问您的远程桌面了。在这之前，由于上述 VNC 端口指的是登陆节点的端口，不是您本机的端口，因此您还需要先通过 SSH 进行端口转发，将这个端口映射到您本地的某个端口。您只需要在 SSH 登录时附带上 `-L 本地端口:localhost:服务器VNC端口` 参数即可，比如：
+该虚拟节点的主机名是 `cloud-USERNAME`，您的 VNC 会运行在该节点的 5901 端口。为了在您的计算机上访问该虚拟节点，您还需要先通过 SSH 进行端口转发，将这个端口映射到您本地的某个端口。您只需要在 SSH 登录时附带上 `-L 本地端口:cloud-USERNAME:5901` 参数即可，比如：
 ```bash
-ssh username@fics.local.zhutmost.com -L 60000:localhost:5908
+ssh username@fics.local.zhutmost.com -L 60000:cloud-USERNAME:5901
 # 60000是您的本地的端口，10000-65535之间可以随便选（不要和自己电脑上其他服务冲突就行）
-# 5908是您的 VNC 端口，在上面的步骤中由服务器分配的
+# 5901是您的 VNC 端口，cloud-USERNAME是你的虚拟节点主机名
 ```
 只要您的 SSH 连接不断开，您就可以利用 VNC 客户端连接 `localhost:60000` 来访问您的远程桌面了。VNC 客户端有很多，您可以自行选择：
 - RealVNC VNC Viewer（Windows/Linux/macOS，需另行安装，[官网下载](https://www.realvnc.com/en/connect/download/viewer)）；
@@ -143,6 +143,8 @@ ssh username@fics.local.zhutmost.com -L 60000:localhost:5908
 请注意在 VNC 使用中，上述 SSH 连接不能断开（不要关闭 Terminal 或 PowerShell 窗口）。
 
 VNC 桌面分辨率的设置和本地的 Linux 桌面设置方法一致，您可以在 VNC 桌面左上角的“所有应用程序-设置-显示”里找到。
+
+**注意**：初次使用 VNC，请使用 `vncpasswd` 设置 VNC 密码（为了服务器安全，请勿使用 `123456`、`asdfghjkl` 等弱口令）。
 
 #### FICS 的文件存储
 
@@ -169,7 +171,9 @@ VNC 桌面分辨率的设置和本地的 Linux 桌面设置方法一致，您可
 
 #### FICS 和本地间的文件上传/下载
 
-FICS 提供了 SSH 协议供用户访问，因此用户可以使用基于 SSH 的 SCP 命令或工具进行文件的上传和下载。由于 SCP 是基于 SSH 协议的，因此这里如果需要填写密码，请填写您的 FICS 账户密码（而不是 VNC 密码）。
+FICS 提供了 SFTP 协议供用户访问，因此用户可以使用基于 SSH 的 SCP 命令或工具进行文件的上传和下载。由于 SCP 是基于 SSH 协议的，因此这里如果需要填写密码，请填写您的 FICS 账户密码（而不是 VNC 密码）。
+
+**注意**：默认情况下，普通用户没有开通SFTP权限，因此您无法上传、下载服务器上的文件。如果您需要开通该权限，请您联系管理员申请（如果您是 FICS 的学生，请先征得日常指导老师的同意）。
 
 Linux 和 macOS 预置了 `scp` 命令，您可以在 Terminal 中使用该命令。您可以参考以下的例子：
 ```bash
@@ -182,6 +186,8 @@ scp USERNAME@fics.local.zhutmost.com:/capsule/home/USERNAME/Desktop/b.txt ~/Down
 ```
 
 对于 Windows 用户，我们推荐使用 [WinSCP](https://winscp.net/eng/download.php) 工具。
+
+您也可以使用其他 SFTP 软件客户端访问服务器。
 
 ### 任务的提交与管理
 
@@ -246,7 +252,6 @@ spectre/19.1
 htop/2.2.0          python/3.9
 ```
 </details>
-
 
 如果您觉得已默认加载的软件的版本可以接受，可以忽略本节下面的内容。
 
