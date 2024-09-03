@@ -113,6 +113,8 @@ ssh username@fics.local.zhutmost.com
 
 **注意**：短时间多次错误密码登陆会导致账号被锁（这是一种安全机制，防止账号密码被定向爆破），解锁请邮件管理员。
 
+
+
 #### 如何用 VNC 连接远程桌面虚拟节点
 
 针对模拟电路设计、数字后端、观察仿真波形等需求，FICS 支持使用 VNC 访问远程桌面。如果您的工作仅限于 GPU 炼丹等没有图形界面需求的任务，您可以跳过这一节。
@@ -143,6 +145,26 @@ ssh username@fics.local.zhutmost.com -L 60000:cloud-USERNAME:5901
 请注意在 VNC 使用中，上述 SSH 连接不能断开（不要关闭 Terminal 或 PowerShell 窗口）。
 
 VNC 桌面分辨率的设置和本地的 Linux 桌面设置方法一致，您可以在 VNC 桌面左上角的“所有应用程序-设置-显示”里找到。
+
+开启远程桌面后，可以使用跳板命令直接连接虚拟节点，从而直接传输文件或者连接VSCode等IDE。
+
+使用命令`ssh -J username@10.155.102.33 username@cloud-USERNAME`则可以连接。
+
+为了方便使用，我们还可以设置`config`文件达到简化命令的目的。
+
+```
+Host fics
+  HostName 10.155.102.33
+  User USERNAME
+  IdentityFile YOUR_FILE
+
+Host fics-knob
+  HostName cloud-USERNAME
+  User USERNAME
+  ProxyJump fics
+```
+
+这样直接使用`ssh fics-knob`即可连接至虚拟节点。在VSCode中，连接至远程服务器也会弹出对应选项。
 
 **注意**：初次使用 VNC，请使用 `vncpasswd` 设置 VNC 密码（为了服务器安全，请勿使用 `123456`、`asdfghjkl` 等弱口令）。
 
