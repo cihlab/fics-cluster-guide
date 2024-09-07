@@ -123,7 +123,7 @@ FICS 集群给每个用户分配了一台带有 VNC 的远程桌面虚拟节点�
 
 - `knob start`，如果您之前未使用过 VNC 远程桌面，需要使用该命令启动它；
 - `knob status`，查看当前 VNC 远程桌面的状态；
-- `knob reset`，重置您的 VNC 远程桌面的虚拟节点；
+- `knob reset`，重置您的 VNC 远程桌面的虚拟节点，并更新节点至最新版本的镜像；
 - `knob restart`，重启当前 VNC 远程桌面；
 - `knob shutdown`，关闭当前 VNC 远程桌面；
 
@@ -142,31 +142,12 @@ ssh username@fics.local.zhutmost.com -L 60000:cloud-USERNAME:5901
 - Remmina（Ubuntu 等部分 Linux 发行版自带）；
 - macOS 自带（Finder文件管理器窗口下按下 `Cmd`+`K`，然后输入 `vnc://localhost:60000`）。
 
-请注意在 VNC 使用中，上述 SSH 连接不能断开（不要关闭 Terminal 或 PowerShell 窗口）。
-
-VNC 桌面分辨率的设置和本地的 Linux 桌面设置方法一致，您可以在 VNC 桌面左上角的“所有应用程序-设置-显示”里找到。
-
-开启远程桌面后，可以使用跳板命令直接连接虚拟节点，从而直接传输文件或者连接VSCode等IDE。
-
-使用命令`ssh -J username@10.155.102.33 username@cloud-USERNAME`则可以连接。
-
-为了方便使用，我们还可以设置`config`文件达到简化命令的目的。
-
-```
-Host fics
-  HostName 10.155.102.33
-  User USERNAME
-  IdentityFile YOUR_FILE
-
-Host fics-knob
-  HostName cloud-USERNAME
-  User USERNAME
-  ProxyJump fics
-```
-
-这样直接使用`ssh fics-knob`即可连接至虚拟节点。在VSCode中，连接至远程服务器也会弹出对应选项。
-
-**注意**：初次使用 VNC，请使用 `vncpasswd` 设置 VNC 密码（为了服务器安全，请勿使用 `123456`、`asdfghjkl` 等弱口令）。
+**注意**：
+- 初次使用 VNC，请使用 `vncpasswd` 设置 VNC 密码（为了服务器安全，请勿使用 `123456`、`asdfghjkl` 等弱口令）。
+- 请注意在 VNC 使用中，上述 SSH 连接不能断开（不要关闭 Terminal 或 PowerShell 窗口）。
+- 管理员会经常更新虚拟节点的镜像，如果您发现了任何软件问题，可以考虑在 `cloud-mgmt01` 节点运行 `knob reset` 以升级您的镜像。一般情况下，这可以解决大多数已知的常见问题。
+- VNC 桌面分辨率的设置和本地的 Linux 桌面设置方法一致，您可以在 VNC 桌面左上角的“所有应用程序-设置-显示”里找到。
+- 关于 VSCode 直连 VNC 远程桌面，请查看[SSH 跳板连接的设置](#ssh-跳板连接的设置)。
 
 #### FICS 的文件存储
 
@@ -297,6 +278,29 @@ FICS 采用 `module` 管理 EDA 软件环境。您可以阅读[官方文档](htt
 ### GPU 炼丹相关
 
 请参考[文档](./gpu-queue.md)。
+
+### SSH 跳板连接的设置
+
+开启 VNC 远程桌面（`knob start`）后，可以使用跳板命令直接连接虚拟节点，从而直接传输文件或者连接 VSCode 等 IDE。即使用以下命令：
+```bash
+ssh -J USERNAME@10.155.102.33 USERNAME@cloud-USERNAME
+```
+
+为了方便使用，我们还可以设置 SSH 的配置文件（在 Linux/macOS 上是 `~/.ssh/config`）达到简化命令的目的。
+
+```
+Host fics.local
+  HostName 10.155.102.33
+  User USERNAME
+  IdentityFile YOUR_FILE
+
+Host fics-knob.local
+  HostName cloud-USERNAME
+  User USERNAME
+  ProxyJump fics
+```
+
+这样直接使用命令`ssh fics-knob.local`即可连接至虚拟节点。在VSCode中，连接至远程服务器也会弹出对应选项。
 
 ### 跨账户文件共享与权限管理
 
