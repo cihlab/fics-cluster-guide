@@ -343,6 +343,8 @@ kgroup -a sanzhang
 绝大多数您的问题都可以通过阅读用户文档解决。
 如果您在使用 FICS 的过程中遇到了难以解决的问题，除了在办公室内询问其他人，您也可以通过以下方式与管理员或其他用户交流。
 
+注意：FICS使用过程中有问题**不要直接私信管理员**，所有问题请务必公开讨论（邮件, issue或协调群），管理员有权拒绝非公开求助。
+
 ### GitHub Issue（建议）
 
 直接在 GitHub 上[创建 Issue](https://github.com/cihlab/fics-cluster-guide/issues)，并清楚描述您遇到的问题或现象。
