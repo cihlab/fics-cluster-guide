@@ -10,7 +10,7 @@ FICS 的 makkapakka 队列包括 4 个计算节点，每个节点配备了 5 张
 - `/lamport/shared`：登录节点和所有计算节点可见（炼丹原则上不需要用它）；
 - `/lamport/makkapakka`：仅登录节点和 makkapakka 队列计算节点可见。
 
-原则上，请将所有的 Model 和 Dataset 存储在 `/lamport/makkapakka`，建议将您的 `conda` 环境也存放在其中。请您在`/lamport/makkapakka`下自行新建和您的用户名完全相同的文件夹（否则会被管理员不定期删除），然后您炼丹需要读写的文件都放在该文件夹下。
+原则上，请将所有的 Model 和 Dataset 存储在 `/lamport/makkapakka`，此外，建议谨慎选择conda的安装位置，默认状态下，conda安装完后会每次打开shell都会自动activate base环境，除非你了解如何关掉这个自动activate，否则建议conda安装在home目录（因为conda自动activate的环境可能会导致意想不到的磁盘同步问题，严重时会影响你帐号的正常使用，如果你能自行妥善处理此类问题，请忽略以上建议）。请您在`/lamport/makkapakka`下自行新建和您的用户名完全相同的文件夹（否则会被管理员不定期删除），然后您炼丹需要读写的文件都放在该文件夹下。
 
 请务必理解并确认：
 - 您的 Model、Dataset、Log 等各类和炼丹有关的磁盘读写必须在 `/lamport/makkapakka/USERNAME`下；
