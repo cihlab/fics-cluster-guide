@@ -2,12 +2,7 @@
 
 ## How to update CUDA Driver？
 
-目前(2024/10/20)服务器内部两个 GPU 队列的CUDA 驱动版本分别如下：
-
-- Makkappaka(3090): 12.2
-- Miller(A100): 12.3
-
-Makkapakka更新 CUDA Driver 需要完成以下步骤操作
+**更新 CUDA Driver 需要完成以下步骤操作**
 
 1. 向管理员申请sudo权限
 2. 从 [CUDA Toolkit Archive](https://developer.nvidia.com/cuda-toolkit-archive)上寻找你需要的 CUDA 驱动版本
@@ -15,7 +10,7 @@ Makkapakka更新 CUDA Driver 需要完成以下步骤操作
 
 ![FICS Overview](img/QA-CUDA-PlatformSelect.png)
 
-4. 进入到对应的 GPU 队列内
+4. 进入到对应的 GPU 节点内
 5. 以 CUDA12.3为示例，进入到使用如下指令装base installer，其中包含 Driver Installer 和CUDA Toolkit。与官网页面不同的是省略`sudo yum clean all`步骤
 
 ```bash
@@ -39,7 +34,7 @@ sudo yum -y install nvidia-driver-latest-dkms
 
 ​	在显示 Complete 后，则安装完成。
 
-7. 在保证该队列无任务正在运行的前提下，向管理员申请重启该队列
+7. 在保证该节点无任务正在运行的前提下，向管理员申请重启该节点
 8. 安装完成，通过`nvidia-smi`等方法查看CUDA Driver 是否安装成功
 
 **PS：**在第 5 步安装过程中，可能会出现依赖组件缺失的问题。根据缺失提示，可以选择直接通过`yum`进行安装。如果 yum 源不存在该组件，则在[epel源](https://archives.fedoraproject.org/pub/archive/epel/7/x86_64/Packages/)中寻找对应的组件，通过`wget EPEL_Source/xxx.rpm`和`yum install xxx.rpm `进行手动安装。
