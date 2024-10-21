@@ -11,7 +11,7 @@
 ![FICS Overview](img/QA-CUDA-PlatformSelect.png)
 
 4. 进入到对应的 GPU 节点内
-5. 以 CUDA12.3为示例，进入到使用如下指令装base installer，其中包含 Driver Installer 和CUDA Toolkit。与官网页面不同的是省略`sudo yum clean all`步骤
+5. 以 CUDA12.3为示例，使用如下指令装base installer，其中包含 Driver Installer 和CUDA Toolkit。与官网页面不同的是省略`sudo yum clean all`步骤
 
 ```bash
 # CUDA12.3 example
