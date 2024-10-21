@@ -18,7 +18,7 @@
 cd ~/YOUR-WORKSPACE
 wget https://developer.download.nvidia.com/compute/cuda/12.3.2/local_installers/cuda-repo-rhel7-12-3-local-12.3.2_545.23.08-1.x86_64.rpm
 sudo yum install cuda-repo-rhel7-12-3-local-12.3.2_545.23.08-1.x86_64.rpm
-sudo yum -y install cuda-toolkit-12-3
+sudo yum -y install cuda-toolkit-12-3 nvidia-fabric-manager
 ```
 
 6. 完成 base install 后，开始正式的驱动安装。官网上提供了
