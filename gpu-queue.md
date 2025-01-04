@@ -39,11 +39,15 @@ FICS 的 makkapakka 计算节点是自带 Python 环境的，但不建议使用�
   # 直接运行该脚本
   /path/to/your/Miniforge3-Linux-x86_64.sh
   ```
-3. 按照提示完成安装，安装过程中需要您回答一些问题，请根据实际需求和具体情况回答。建议您将安装目录设置为 /lamport 分布式文件夹下您的个人目录：`/lamport/makkapakka/USERNAME/miniforge3`；
+3. 按照提示完成安装，安装过程中需要您回答一些问题，请根据实际需求和具体情况回答。建议您将安装目录设置在您的用户 home 目录下：例如`/capsule/home/USERNAME/miniforge3`。不建议将 `conda` 安装在`/lamport/makkapakka`分布式文件夹下；
 4. 安装程序会在最后将一段初始化脚本增加到您的 `.bashrc`/`.zshrc` 的最后，这样以来您每次登录 FICS 时它都会设置好您的 Python 环境（命令行中会显示一个 `(base)` 字样表示您当前的 Python 环境）。
 5. 重启您的 shell（或者重新登录 FICS），然后执行以下命令，确认您的 `conda` 环境已经安装成功：
   ```bash
   conda info
+  ```
+6. 根据需要可以在 Terminal 中执行以下命令来关闭自动激活`(base)`环境：
+  ```bash
+  conda config --set auto_activate_base false
   ```
 
 为了减少您下载安装文件并上传到服务器上的困扰，[Haozhe Zhu](https://github.com/zhutmost) 个人在服务器上预置一个 `Miniforge` 的安装文件：`/capsule/home/hzzhu/Downloads/Miniforge3-Linux-x86_64.sh`，即您可以跳过上面的第 1、2 步骤，直接执行以下命令进行安装：
