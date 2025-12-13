@@ -341,6 +341,9 @@ kgroup -a sanzhang
    c. github issue
    d. 管理群
 
+### 以下是一些常见问题的SOP操作：
+[SSH 连接失败排查 SOP](./SOP-SSH-Fail-to-Connect.md)
+
 ## FICS 的管理
 
 绝大多数您的问题都可以通过阅读用户文档解决。
