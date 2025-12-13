@@ -328,6 +328,9 @@ kgroup -a sanzhang
 由于 FICS 采用了分布式的文件系统，您在每次修改权限后需要等待服务器间的同步，您也可以在 Shell 中执行 `flushsss` 命令来手工执行同步机制。
 如果其他用户仍然无法访问您的文件夹和文件，请提醒他们重启自己的 SSH 链接（VNC 用户需要 `vnc restart`）。
 
+### pycharm 在服务器远程调试
+请参考[在Windows上使用pycharm 2021.3在服务器远程调试（包括运行代码与debug）](./pycharm-win-debug.md)。
+
 ## TroubleShooting
 
 1. 不要惊慌，先reset knob；
