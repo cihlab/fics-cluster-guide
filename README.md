@@ -347,6 +347,11 @@ kgroup -a sanzhang
 ### 一些常见问题的SOP操作：
 [SSH 连接失败排查 SOP](./SOP-SSH-Fail-to-Connect.md)
 
+#### VNC无法连接出现“connection closed unexpectedly” 
+1. vnc reset
+2. reset之后仍不起效果的话尝试 vncpasswd 重新设置vnc密码
+3. vnc reset
+
 ## FICS 的管理
 
 绝大多数您的问题都可以通过阅读用户文档解决。
