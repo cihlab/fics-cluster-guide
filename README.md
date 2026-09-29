@@ -121,15 +121,37 @@ ssh username@fics.local.zhutmost.com
 
 FICS 集群给每个用户分配了一台带有 VNC 的远程桌面虚拟节点，您需要使用 `knob` 命令启动和管理它。`knob` 的使用方法如下：
 
-- `knob start`，如果您之前未使用过 VNC 远程桌面，需要使用该命令启动它；
-- `knob status`，查看当前 VNC 远程桌面的状态；
-- `knob reset`，重置您的 VNC 远程桌面的虚拟节点，并更新节点至最新版本的镜像；
-- `knob restart`，重启当前 VNC 远程桌面；
-- `knob shutdown`，关闭当前 VNC 远程桌面；
+```
+usage: knob [选项] [命令]
 
-在 `knob start` 启动 VNC 远程桌面后，您可以通过 `knob status` 观察到您的 VNC 远程桌面已经启动，如下图所示。
+knob — CPU/GPU 资源控制台。直接运行 knob 进入统一终端界面。
 
-![FICS VNC Status](img/fics-vnc.jpg)
+options:
+  -h, --help         show this help message and exit
+  -j, --json         输出 JSON，供脚本使用
+  -v, --verbose      显示请求编号和原始错误
+
+快捷命令:
+  命令
+    whoami           当前身份
+    templates (tpl)  可用模板
+    quota (q)        额度与剩余资源
+    list (ls)        我的虚拟机
+    show             查看详情
+    start            启动CPU实例；GPU恢复在终端内重新排队
+    stop             CPU正常关机；GPU释放卡并保留磁盘
+    reboot           重启
+    force-stop       强制断电
+    delete (rm)      删除虚拟机
+    create           创建CPU实例；GPU申请在终端内填写
+
+终端菜单：CPU实例、GPU实例、公共队列；管理员可见审批、主机、任务例外、用户配额、平台配置。
+在终端内按 w 获取网页地址和登录码。无需记住各功能的子命令。
+快捷操作示例：knob list  ·  knob quota  ·  knob create -t 13 -c 2
+命令帮助：knob 命令 --help；脚本输出：knob 命令 --json。
+```
+
+在 `knob create` 创建 VNC 远程桌面后，您可以通过 `knob ls` 观察到您的 VNC 远程桌面已经启动，如下图所示。
 
 该虚拟节点的主机名是 `cloud-USERNAME`，您的 VNC 会运行在该节点的 5901 端口。为了在您的计算机上访问该虚拟节点，您还需要先通过 SSH 进行端口转发，将这个端口映射到您本地的某个端口。您只需要在 SSH 登录时附带上 `-L 本地端口:cloud-USERNAME:5901` 参数即可，比如：
 ```bash
@@ -143,7 +165,7 @@ ssh username@fics.local.zhutmost.com -L 60000:cloud-USERNAME:5901
 - macOS 自带（Finder文件管理器窗口下按下 `Cmd`+`K`，然后输入 `vnc://localhost:60000`）。
 
 **注意**：
-- 初次使用 VNC，请使用 `vncpasswd` 设置 VNC 密码（为了服务器安全，请勿使用 `123456`、`asdfghjkl` 等弱口令）。
+- VNC密码为账户密码。
 - 请注意在 VNC 使用中，上述 SSH 连接不能断开（不要关闭 Terminal 或 PowerShell 窗口）。
 - 管理员会经常更新虚拟节点的镜像，如果您发现了任何软件问题，可以考虑在 `cloud-mgmt01` 节点运行 `knob reset` 以升级您的镜像。一般情况下，这可以解决大多数已知的常见问题。
 - VNC 桌面分辨率的设置和本地的 Linux 桌面设置方法一致，您可以在 VNC 桌面左上角的“所有应用程序-设置-显示”里找到。
