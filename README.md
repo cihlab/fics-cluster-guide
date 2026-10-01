@@ -177,20 +177,19 @@ ssh username@fics.local.zhutmost.com -L 60000:cloud-USERNAME:5901
 
 | 文件夹 | 位置 | 备注 |
 |:-------|:-----|:-----|
-| 用户 `HOME` 目录          | `/capsule/home/USERNAME`  |  |
-| EDA 目录                  | `/capsule-ng/eda`         | 分布式存储 |
+| 用户共享数据目录          | `/capsule/home/USERNAME`  | 用户个人数据 |
+| EDA 目录                  | `/capsule/eda`         | 分布式存储 |
 | PDK 目录                  | `/capsule/pdk`            |  |
 | 其他软件目录              | `/capsule/opt`            |  |
-| 分布式通用存储目录        | `/lamport/shared`         | 分布式存储 |
-| 分布式 GPU 队列存储目录   | `/lamport/makkapakka`     | 分布式存储，仅 GPU 队列 `makkapakka` 可见 |
+| 分布式通用存储目录        | `/scratch/shared`         | 分布式存储 |
+| 分布式 GPU 队列存储目录   | `/scratch/makkapakka`     | 分布式存储，仅 GPU 队列 `makkapakka` 可见 |
 
 其中，
 - `/capsule` 目录（包括 HOME 目录和 PDK 等）是存储在 Capsule 储存节点服务器上的，文件 I/O 服务质量可能受该服务器的负载情况影响；
-- `/lamport` 目录和 `/lamport/shared` 目录均是分布式存储，不受单个节点影响，有较高的 I/O 带宽（但对于大量小文件的情形会不太友好）；
-- `/lamport/makkapakka` 和 `/lamport/shared` 类似，但它仅对 GPU 队列 `makkapakka` 可见；
+- `/scratch` 目录是新的分布式存储，不受单个节点影响，有较高的 I/O 带宽（但对于大量小文件的情形会不太友好）；
 - 我们为绝大多数共享目录都设置了内存缓存，以改善 I/O 性能。
 
-因此，我们建议您尽可能将 EDA/AI 任务的大规模文件 I/O （例如 AI 数据集、仿真波形等）放在 `/lamport/shared`  或 `/lamport/makkapakka` 目录下，以获得更好的综合 I/O 性能。如果需要使用的话，您可以在对应的 `/lamport/shared`  或 `/lamport/makkapakka` 目录下创建一个和您的用户名完全一致的文件夹，把您的个人数据放在其中。
+因此，我们建议您尽可能将 EDA/AI 任务的大规模文件 I/O （例如 AI 数据集、仿真波形等）放在 `/scratch/shared`  或 `/scratch/makkapakka` 目录下，以获得更好的综合 I/O 性能。如果需要使用的话，您可以在对应的 `/scratch/shared`  或 `/scratch/makkapakka` 目录下创建一个和您的用户名完全一致的文件夹，把您的个人数据放在其中。
 
 此外，任何情况下都不要在您的 `HOME` 目录下进行大规模文件 I/O（比如执行一些 Python 批处理脚本），会导致所有人都会变卡顿。
 
